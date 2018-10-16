@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"terminal.integrated.env.osx": {
+			"PATH": "/Users/diejmon/.platformio/penv/bin:/Users/diejmon/.platformio/penv:/Users/diejmon/.swiftenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:/usr/local/MacGPG2/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/diejmon/.cargo/bin:/Users/diejmon/.gem:/Users/diejmon/Applications/esp32/xtensa-esp32-elf/bin:/Users/diejmon/Applications/esp32/bin",
+			"PLATFORMIO_CALLER": "vscode"
+		},
+		"files.associations": {
+			"esp_gap_ble_api.h": "c",
+			"dht.h": "c",
+			"timers.h": "c",
+			"task.h": "c",
+			"freertos.h": "c",
+			"unity.h": "c",
+			"cstdio": "c"
+		}
+	}
+}
