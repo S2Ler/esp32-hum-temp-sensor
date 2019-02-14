@@ -15,6 +15,7 @@
 #include "dht_sensor.h"
 #include "mqtt_client.h"
 #include "secrets.h"
+#include <TemperatureWithHumidity.h>
 
 #define CONFIG_ESP_MAXIMUM_RETRY 10
 
@@ -100,6 +101,11 @@ static void sensor_handle(float humidity, float temperature) {
     snprintf(temperature_str, 50, "%.2f", temperature);
 
     ESP_LOGI(TAG, "temperature: %f; humidity: %f", temperature, humidity);
+
+    TemperatureWithHumidity values;
+    values.temperatureInCelsius = temperature;
+    values.humidityInPercent = humidity;
+    const char *str = TemperatureWithHumidityEncode(&values);
 
 //    esp_mqtt_client_publish(mqtt_client, "temperature", humidity_str, 0, 0, 0);
 }

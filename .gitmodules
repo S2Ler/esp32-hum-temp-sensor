@@ -1,0 +1,3 @@
+[submodule "lib/HSMqttTypes"]
+	path = lib/HSMqttTypes
+	url = git@github.com:diejmon/HSMqttTypes.git
