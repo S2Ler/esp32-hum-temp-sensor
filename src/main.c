@@ -88,26 +88,26 @@ static void wifi_init_sta()
 }
 
 static void sensor_handle(float humidity, float temperature) {
-//    configASSERT(mqtt_client != NULL);
-    // if (!(xEventGroupGetBits(s_mqtt_client_event_group) & MQTT_CLIENT_CONNECTED_BIT)) {
-    //     ESP_LOGI(TAG, "Sensor date received, but mqtt client isn't connected");
-    //     return;
-    // };
-
-    char humidity_str[10];
-    snprintf(humidity_str, 50, "%.2f", humidity);
-
-    char temperature_str[10];
-    snprintf(temperature_str, 50, "%.2f", temperature);
+    configASSERT(mqtt_client != NULL);
+    if (!(xEventGroupGetBits(s_mqtt_client_event_group) & MQTT_CLIENT_CONNECTED_BIT)) {
+         ESP_LOGI(TAG, "Sensor date received, but mqtt client isn't connected");
+         return;
+    };
 
     ESP_LOGI(TAG, "temperature: %f; humidity: %f", temperature, humidity);
 
     TemperatureWithHumidity values;
     values.temperatureInCelsius = temperature;
     values.humidityInPercent = humidity;
-    const char *str = TemperatureWithHumidityEncode(&values);
-
-//    esp_mqtt_client_publish(mqtt_client, "temperature", humidity_str, 0, 0, 0);
+    char *payload = TemperatureWithHumidityEncode(&values);
+    if (payload) {
+        ESP_LOGI(TAG, "payload: %s", payload);
+        esp_mqtt_client_publish(mqtt_client, "temperature_humidity", payload, 0, 0, 0);
+        free(payload);
+    }
+    else {
+        ESP_LOGE(TAG, "Incorrect payload: %lf, %lf", temperature, humidity);
+    }
 }
 
 static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event) {
@@ -141,6 +141,8 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event) {
 }
 
 static void start_mqtt_client() {
+    s_mqtt_client_event_group = xEventGroupCreate();
+
     const esp_mqtt_client_config_t mqtt_cfg = {
         .uri = CONFIG_MQTT_CLIENT_URI,
         .client_id = CONFIG_MQTT_CLIENT_ID,
@@ -170,8 +172,8 @@ void app_main()
     ESP_ERROR_CHECK(ret);
     
     ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
-//    wifi_init_sta();
-
-//    start_mqtt_client();
+    wifi_init_sta();
+    ESP_LOGI(TAG, "Ready to init mqtt client");
+    start_mqtt_client();
     start_dht_sensor();
 }

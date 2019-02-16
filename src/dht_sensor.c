@@ -32,11 +32,11 @@ void DHT_task(void *pvParameter)
     {
         ESP_LOGI(TAG, "=== Reading DHT ===\n");
         if (dht_read_data(DHT_TYPE_DHT22, parameters->gpio, &humidity, &temperature) == ESP_OK) {
-            ESP_LOGI(TAG, "Humidity: %d%% Temp: %dC\n", humidity / 10, temperature / 10);
+            ESP_LOGI(TAG, "Humidity: %f%% Temp: %fC\n", (float)humidity / 10.0, (float)temperature / 10.0);
         } else {
             printf("Could not read data from sensor\n");
         }
-        parameters->handle(humidity / 10, temperature / 10);
+        parameters->handle((float)humidity / 10.0, (float)temperature / 10.0);
 
         // -- wait at least 2 sec before reading again ------------
         // The interval of whole process must be beyond 2 seconds !!
