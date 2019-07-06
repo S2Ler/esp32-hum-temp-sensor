@@ -158,7 +158,7 @@ static void start_mqtt_client() {
 }
 
 static void start_dht_sensor() {
-    dht_sensor = DHT_sensor_create(4, sensor_handle, 6000);
+    dht_sensor = DHT_sensor_create(4, sensor_handle, 120000);
 }
 
 void app_main()

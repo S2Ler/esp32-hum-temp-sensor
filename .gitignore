@@ -6,3 +6,4 @@
 CMakeListsPrivate.txt
 /src/secrets.h
 /secrets.txt
+.vscode/ipch
